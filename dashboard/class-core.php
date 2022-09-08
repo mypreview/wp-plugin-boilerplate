@@ -12,7 +12,6 @@
 
 namespace PluginName_Customizer\Dashboard;
 
-use PluginName_Customizer\Dashboard\Api\Exclusive_Listings as Exclusive_Listings_Api;
 use PluginName_Customizer\Includes\Utils as Utils;
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
@@ -38,9 +37,7 @@ if ( ! class_exists( 'Core' ) ) :
 		 * @since     1.0.0
 		 * @return    void
 		 */
-		public function rest_api(): void {
-			new Exclusive_Listings_Api();
-		}
+		public function rest_api(): void {}
 
 		/**
 		 * Registers block types from metadata stored in the `block.json` files.
