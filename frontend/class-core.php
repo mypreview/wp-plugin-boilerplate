@@ -12,6 +12,7 @@
 
 namespace PluginName_Customizer\Frontend;
 
+use const PluginName_Customizer\PLUGIN as PLUGIN;
 use PluginName_Customizer\Includes\Utils as Utils;
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
