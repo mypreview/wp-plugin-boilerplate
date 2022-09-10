@@ -45,6 +45,10 @@
 		"@mypreview/unicorn-react-components": "1.6.0",
 		"@mypreview/unicorn-react-hooks": "1.3.0",
 		"@mypreview/unicorn-style-utils": "1.0.2",
+		"@wordpress/blocks": "11.15.0",
+		"@wordpress/dom-ready": "3.16.0",
+		"@wordpress/i18n": "4.16.0",
+		"@wordpress/plugins": "4.14.0",
 		"lodash": "4.17.21",
 		"prop-types": "15.8.1"
 	},
