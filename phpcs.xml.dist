@@ -77,7 +77,7 @@
             <property name="prefixes" type="array">
                 <element value="pluginname_customizer" />
                 <element value="PluginName_Customizer" />
-                <element value="METAHOMEBUYERS_CUSTOMIZER" />
+                <element value="PLUGINNAME_CUSTOMIZER" />
             </property>
         </properties>
     </rule>
