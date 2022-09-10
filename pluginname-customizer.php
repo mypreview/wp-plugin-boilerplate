@@ -52,7 +52,7 @@ define(
  * @since     1.0.0
  * @return    void
  */
-require_once PLUGIN['dir_path'] . '/autoloader.php';
+require_once PLUGIN['dir_path'] . '/vendor/autoload.php';
 
 /**
  * The code that runs during plugin activation.
