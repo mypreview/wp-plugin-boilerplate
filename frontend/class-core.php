@@ -42,7 +42,7 @@ if ( ! class_exists( 'Core' ) ) :
 			// Enqueue public-facing static resources.
 			Utils::enqueue_resources( 'frontend' );
 
-			wp_localize_script(
+			\wp_localize_script(
 				Utils::get_asset_handle( 'frontend', 'script' ),
 				Utils::underlinify( PLUGIN['slug'] ),
 				apply_filters(
@@ -55,7 +55,7 @@ if ( ! class_exists( 'Core' ) ) :
 				)
 			);
 
-			do_action( 'pluginname_customizer_enqueue_frontend' );
+			\do_action( 'pluginname_customizer_enqueue_frontend' );
 		}
 
 	}

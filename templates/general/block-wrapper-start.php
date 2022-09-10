@@ -8,7 +8,6 @@
  *
  * @package       pluginname-customizer
  * @subpackage    pluginname-customizer/templates/general
- * @phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
  */
 
 namespace PluginName_Customizer\Templates\General;
@@ -16,7 +15,7 @@ namespace PluginName_Customizer\Templates\General;
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
 ?>
-<div <?php echo $args['wrapper_attributes']; ?>>
+<div <?php echo \wp_kses( $args['wrapper_attributes'], \wp_kses_allowed_html( 'data' ) ); ?>>
 
 <?php
 /* Omit closing PHP tag at the end of PHP files to avoid "headers already sent" issues. */

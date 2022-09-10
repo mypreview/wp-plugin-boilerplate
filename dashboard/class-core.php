@@ -53,14 +53,14 @@ if ( ! class_exists( 'Core' ) ) :
 				$args = array();
 
 				if ( is_readable( $fully_qualified_path ) ) {
-					$metadata = wp_json_file_decode( $fully_qualified_path, array( 'associative' => true ) );
+					$metadata = \wp_json_file_decode( $fully_qualified_path, array( 'associative' => true ) );
 
 					if ( isset( $metadata['category'] ) && 'widgets' === $metadata['category'] ?? '' ) {
 						$args['render_callback'] = 'PluginName_Customizer\Frontend\Core::render_' . Utils::underlinify( basename( $metadata['name'] ) );
 					}
 
 					// Registers a block type from the metadata file.
-					register_block_type_from_metadata( $fully_qualified_path, $args );
+					\register_block_type_from_metadata( $fully_qualified_path, $args );
 				}
 			}
 		}
@@ -75,7 +75,7 @@ if ( ! class_exists( 'Core' ) ) :
 			// Enqueue editor specific static resources.
 			Utils::enqueue_resources( 'editor' );
 
-			do_action( 'pluginname_customizer_enqueue_editor' );
+			\do_action( 'pluginname_customizer_enqueue_editor' );
 		}
 
 	}

@@ -79,8 +79,8 @@ if ( ! class_exists( 'Utils' ) ) :
 			$style_handle  = self::get_asset_handle( $asset_name, 'style' );
 			$script_handle = self::get_asset_handle( $asset_name, 'script' );
 
-			wp_enqueue_style( $style_handle, PLUGIN['dir_url'] . '/build/' . $asset_name . '.css', array(), $version, 'screen' );
-			wp_enqueue_script( $script_handle, PLUGIN['dir_url'] . '/build/' . $asset_name . '.js', $asset['dependencies'] ?? array(), $version, true );
+			\wp_enqueue_style( $style_handle, PLUGIN['dir_url'] . '/build/' . $asset_name . '.css', array(), $version, 'screen' );
+			\wp_enqueue_script( $script_handle, PLUGIN['dir_url'] . '/build/' . $asset_name . '.js', $asset['dependencies'] ?? array(), $version, true );
 		}
 
 		/**
@@ -107,7 +107,7 @@ if ( ! class_exists( 'Utils' ) ) :
 		 * @return    bool
 		 */
 		public static function rest_editor_permission_callback(): bool {
-			return current_user_can( 'edit_posts' );
+			return \current_user_can( 'edit_posts' );
 		}
 
 		/**
@@ -228,9 +228,9 @@ if ( ! class_exists( 'Utils' ) ) :
 		 */
 		public static function is_plugin_activated( string $slug, string $filename = '' ): bool {
 			$filename               = empty( $filename ) ? $slug : $filename;
-			$plugin_path            = apply_filters( 'pluginname_customizer_third_party_plugin_path', sprintf( '%s/%s.php', esc_html( $slug ), esc_html( $filename ) ) );
-			$subsite_active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
-			$network_active_plugins = apply_filters( 'active_plugins', get_site_option( 'active_sitewide_plugins' ) );
+			$plugin_path            = \apply_filters( 'pluginname_customizer_third_party_plugin_path', sprintf( '%s/%s.php', \esc_html( $slug ), \esc_html( $filename ) ) );
+			$subsite_active_plugins = \apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
+			$network_active_plugins = \apply_filters( 'active_plugins', get_site_option( 'active_sitewide_plugins' ) );
 
 			// Bail early in case the plugin is not activated on the website.
 			// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
@@ -260,7 +260,7 @@ if ( ! class_exists( 'Utils' ) ) :
 		 * @return    bool
 		 */
 		public static function is_post_exists( ?string $post_id = '' ): bool {
-			return ! empty( $post_id ) && is_string( get_post_type( $post_id ) );
+			return ! empty( $post_id ) && is_string( \get_post_type( $post_id ) );
 		}
 
 		/**
@@ -289,9 +289,9 @@ if ( ! class_exists( 'Utils' ) ) :
 		 * @return    object
 		 */
 		public static function get_posts_query( array $args = array() ): object {
-			$args  = wp_parse_args(
+			$args  = \wp_parse_args(
 				$args,
-				apply_filters(
+				\apply_filters(
 					'pluginname_customizer_posts_query_args',
 					array(
 						'post_type'           => 'post',
@@ -307,7 +307,7 @@ if ( ! class_exists( 'Utils' ) ) :
 			$query = new \WP_Query( $args );
 
 			// Reset the main query loop.
-			wp_reset_postdata();
+			\wp_reset_postdata();
 
 			return $query;
 		}
@@ -324,7 +324,7 @@ if ( ! class_exists( 'Utils' ) ) :
 			if ( is_array( $var ) ) {
 				return array_map( 'self::clean', $var );
 			} else {
-				return is_scalar( $var ) ? sanitize_text_field( $var ) : $var;
+				return is_scalar( $var ) ? \sanitize_text_field( $var ) : $var;
 			}
 		}
 
@@ -392,6 +392,21 @@ if ( ! class_exists( 'Utils' ) ) :
 		}
 
 		/**
+		 * Implodes given array elements using the "glue" of defined "tag" closed/open,
+		 * and wraps it so the first and last items have their beginning/ending tags.
+		 *
+		 * @since     1.0.0
+		 * @param     array  $elements    Array of elements to render.
+		 * @param     string $glue        HTML tag specified as glue.
+		 * @return    string
+		 */
+		public static function implode_wrap_html_tag( array $elements, string $glue = 'span' ): string {
+			$elements = array_map( 'wp_kses_post', $elements );
+
+			return "<$glue>" . implode( "</$glue><$glue>", $elements ) . "</$glue>";
+		}
+
+		/**
 		 * Returns the template file name without extension being added to it.
 		 *
 		 * @since     1.0.0
@@ -422,8 +437,11 @@ if ( ! class_exists( 'Utils' ) ) :
 		 * @return    string
 		 */
 		public static function get_template_html( string $template_name, array $args = array() ): string {
+			// Start remembering everything that would normally be outputted,
+			// but don't quite do anything with it yet.
 			ob_start();
-			load_template( self::get_template_path( $template_name ), false, $args );
+
+			\load_template( self::get_template_path( $template_name ), false, $args );
 			return ob_get_clean();
 		}
 
@@ -439,7 +457,7 @@ if ( ! class_exists( 'Utils' ) ) :
 			$get_post = get_post( $post, 'OBJECT' );
 
 			if ( is_null( $get_post ) ) {
-				$post_id = (int) get_queried_object_id();
+				$post_id = (int) \get_queried_object_id();
 			} elseif ( property_exists( $get_post, 'ID' ) ) {
 				$post_id = (int) $get_post->ID;
 			}
@@ -460,7 +478,7 @@ if ( ! class_exists( 'Utils' ) ) :
 			if ( self::is_post_exists( $post_id ) ) {
 				$return = $post_id;
 				if ( self::is_polylang_activated() ) {
-					$pll_post_id = pll_get_post( $post_id );
+					$pll_post_id = \pll_get_post( $post_id );
 					if ( $pll_page_id && ! is_null( $pll_page_id ) ) {
 						$return = $pll_post_id;
 					}

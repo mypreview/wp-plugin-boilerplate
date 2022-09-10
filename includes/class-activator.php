@@ -29,7 +29,7 @@ if ( ! class_exists( 'Activator' ) ) :
 		 */
 		public static function run(): void {
 			// Remove rewrite rules and then recreate rewrite rules.
-			flush_rewrite_rules();
+			\flush_rewrite_rules();
 		}
 
 	}

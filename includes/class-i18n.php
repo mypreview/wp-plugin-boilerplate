@@ -31,7 +31,7 @@ if ( ! class_exists( 'I18n' ) ) :
 		 * @return    void
 		 */
 		public static function load_textdomain(): void {
-			load_plugin_textdomain( PLUGIN['slug'], false, dirname( PLUGIN['basename'] ) . '/languages/' );
+			\load_plugin_textdomain( PLUGIN['slug'], false, dirname( PLUGIN['basename'] ) . '/languages/' );
 		}
 	}
 endif;
